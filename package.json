@@ -1,0 +1,30 @@
+{
+  "name": "programacion_backend3_coderhouse_2daaentrega",
+  "version": "1.0.0",
+  "description": "Segunda entrega curso backend 3 - Coderhouse",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha src/test/users.test.js",
+    "dev": "nodemon src/server.js"
+  },
+  "author": "Diego Videla Silva",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
+    "chai": "^5.1.2",
+    "mocha": "^11.1.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
