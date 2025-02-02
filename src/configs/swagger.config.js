@@ -7,7 +7,7 @@ const swaggerOptions = {
             description: 'Documentacion de la APP de adopcion - backend 3 - CoderHouse'
         }
     },
-    apis: ['./docs/**/*.yaml']
+    apis: ['./src/docs/**/*.yaml']
 }
 
 export default swaggerOptions

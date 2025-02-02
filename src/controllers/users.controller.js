@@ -26,8 +26,8 @@ class UsersController {
     getUsers = async (req, res) => {
         try {
             const users = await this.usersService.findAllUsers()
-            if(!users) {
-                return res.status(200).send({status:"Info",error:"No Existen Usuarios registrados"})
+            if(users.length == 0) {
+                return res.status(206).send({status:"Info",error:"No Existen Usuarios registrados"})
             } else {
                 return res.status(200).send({status: 'success', message: 'Usuarios Encontrados exitosamente', data: users})
             }
@@ -56,24 +56,19 @@ class UsersController {
         try {
             const {first_name, last_name, email, password} = req.body
             const userId = req.params.id
-            console.log(userId);
             const userEmail = req.body.email
-            console.log(userEmail);
             
             const userIdExist = await this.usersService.findUser(userId)
-            console.log(userIdExist);
             if(!userIdExist) {
                     return res.status(404).send({status:"error",error:"Usuario no encontrado"})
             } 
 
             const userEmailExist = await this.usersService.findExistUser(userEmail)
-            console.log(userEmailExist);
             if(userEmailExist !== null) {
                 return res.status(400).send({status:"error",error:"Usuario con este email ya registrado"})
             } 
 
             const user = await this.usersService.updateUser(userId, req.body)
-            console.log(user);
             const userNewUpdate = await this.usersService.findUser(userId)
             return res.status(201).send({status: 'success', message: 'Usuario actualizado exitosamente', data: userNewUpdate})
             

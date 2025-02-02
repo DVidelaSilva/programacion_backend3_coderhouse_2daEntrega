@@ -1,0 +1,497 @@
+paths:
+
+  /users/:
+
+    post:
+      summary: Crea un Usuario
+      tags:
+        - Users
+      requestBody:
+        required: true,
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/requestBodies/createUser'
+      responses:
+        "201":
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserPostResponse201'
+        "400":
+          description: Usuario ya se encuentra registrado
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserPostResponse400'
+        "500":
+          description: Error al crear usuario
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserPostResponse500'
+
+      
+    get:
+      summary: Obtiene todos los Usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Usuarios Encontrados exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UsersGetResponse200'
+        "206":
+          description: No Existen Usuarios registrados
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UsersGetResponse206'
+        "500":
+          description: Error al devolver usuarios
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UsersGetResponse500'
+
+  /users/{uid}:
+
+    get:
+      summary: Obtiene un Usuario por su ID
+      tags:
+        - Users
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: id del usuario que se desea buscar
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Usuarios Encontrados exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserGetResponse200'
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserGetResponse404'
+        "500":
+          description: Error al devolver usuarios
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserGetResponse500'
+
+
+    patch:
+      summary: Actualiza un Usuario por su ID
+      tags:
+        - Users
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: id del usuario que se desea actualizar
+        schema:
+          $type: String
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/requestBodies/updateUser'
+      responses:
+        "201":
+          description: Usuario actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserPatchResponse201'
+        "400":
+          description: Usuario con este email ya registrado
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserPatchResponse400'
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserPatchResponse404'
+        "500":
+          description: Error al actualizar usuario
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserPatchResponse500'
+
+  
+    delete:
+      summary: Elimina un Usuario por su ID
+      tags:
+        - Users
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: id del usuario que se desea eliminar
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Usuario eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserDeleteResponse200'
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserDeleteResponse404'
+        "500":
+          description: Error al Eliminar usuario
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/UserDeleteResponse500'
+
+
+
+# ***************COMPONENTES***************
+
+components:
+
+# ***************SCHEMAS***************
+
+  schemas:
+    Users:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id autogenerado por mongoDB
+        first_name:
+          type: string
+          description: nombre del usuario
+        last_name:
+          type: string
+          description: apellido del usuario
+        email:
+          type: string
+          description: email del usuario
+        password:
+          type: string
+          description: password del usuario
+        role:
+          type: string
+          description: role del usuario
+        pets:
+          type: array string
+          description: pets del usuario
+        
+      example:
+        _id: ObjectId('gdfdshshdytvddhydjndhdhd')
+        first_name: Diego
+        last_name: Videla
+        email: diego@mail.com
+        password: '123456'
+        role: user
+        pets: []
+
+
+# ***************RESPONSES***************
+
+  responses:
+
+  # GET
+    UsersGetResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Usuarios Encontrados exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Users'
+      example:  
+        status: "success"
+        message: "Usuarios Encontrados exitosamente"
+        data: 
+          - _id: "679fea7fa0fe36cab7a1a892"
+            first_name: "Lucky"
+            last_name: "Gato"
+            email: "Lucky@mail.com"
+            password: "$2b$10$zx77ggML5ssAArfBVU3SfuC9wGtKKRNhAETylj2xMnpYYv32PvR3i"
+            role: "user"
+            pets: []
+            __v: 0
+    UsersGetResponse206:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "Info"
+        message:
+          type: string
+          example: "No Existen Usuarios registrados"
+      example:  
+        status: "Info"
+        message: "No Existen Usuarios registrados"
+    UsersGetResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al devolver usuarios"
+      example:  
+        message: "Error al devolver usuarios"
+
+    # GET:uid
+    UserGetResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Usuario Encontrado exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Users'
+      example:  
+        status: "success"
+        message: "Usuario Encontrado exitosamente"
+        data: 
+          - _id: "679fea7fa0fe36cab7a1a892"
+            first_name: "Lucky"
+            last_name: "Gato"
+            email: "Lucky@mail.com"
+            password: "$2b$10$zx77ggML5ssAArfBVU3SfuC9wGtKKRNhAETylj2xMnpYYv32PvR3i"
+            role: "user"
+            pets: []
+            __v: 0
+    UserGetResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Usuario no encontrado"
+      example:  
+        status: "error"
+        message: "Usuario no encontrado"
+    UserGetResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al devolver usuarios"
+      example:  
+        message: "Error al devolver usuarios"
+
+  # POST
+    UserPostResponse201:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Usuario creado exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Users'
+      example:  
+        status: "success"
+        message: "Usuario creado exitosamente"
+        data: 
+          - _id: "679fea7fa0fe36cab7a1a892"
+            first_name: "Lucky"
+            last_name: "Gato"
+            email: "Lucky@mail.com"
+            password: "$2b$10$zx77ggML5ssAArfBVU3SfuC9wGtKKRNhAETylj2xMnpYYv32PvR3i"
+            role: "user"
+            pets: []
+            __v: 0
+    UserPostResponse400:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Usuario ya se encuentra registrado"
+      example:  
+        status: "error"
+        message: "Usuario ya se encuentra registrado"
+    UserPostResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al crear usuario"
+      example:  
+        message: "Error al crear usuario"
+
+  # PATCH
+    UserPatchResponse201:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Usuario actualizado exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Users'
+      example:  
+        status: "success"
+        message: "Usuario actualizado exitosamente"
+        data: 
+          - _id: "679fea7fa0fe36cab7a1a892"
+            first_name: "Lucky"
+            last_name: "Gato"
+            email: "Lucky@mail.com"
+            password: "$2b$10$zx77ggML5ssAArfBVU3SfuC9wGtKKRNhAETylj2xMnpYYv32PvR3i"
+            role: "user"
+            pets: []
+            __v: 0
+    UserPatchResponse400:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Usuario con este email ya registrado"
+      example:  
+        status: "error"
+        message: "Usuario con este email ya registrado"
+    UserPatchResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Usuario no encontrado"
+      example:  
+        status: "error"
+        message: "Usuario no encontrado"
+    UserPatchResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al actualizar usuario"
+      example:  
+        message: "Error al actualizar usuario"
+
+  # DELETE
+    UserDeleteResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Usuario eliminado exitosamente"
+      example:  
+        status: "success"
+        message: "Usuario eliminado exitosamente"
+        data: 
+          - acknowledged: true
+            deletedCount: 1
+
+    UserDeleteResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Usuario no encontrado"
+      example:  
+        status: "error"
+        message: "Usuario no encontrado"
+    UserDeleteResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al eliminar usuario'"
+      example:  
+        message: "Error al eliminar usuario'"
+  
+
+
+# ***************REQUEST_BODY***************
+
+  requestBodies:
+    createUser:
+      properties:
+        first_name:
+          type: string
+          description: nombre del usuario
+        last_name:
+          type: string
+          description: apellido del usuario
+        email:
+          type: string
+          description: email del usuario
+        password:
+          type: string
+          description: password del usuario
+      example:
+        first_name: Diego
+        last_name: Videla
+        email: diego@mail.com
+        password: '123456'
+    updateUser:
+      properties:
+        first_name:
+          type: string
+          description: nombre del usuario
+        last_name:
+          type: string
+          description: apellido del usuario
+        email:
+          type: string
+          description: email del usuario
+        password:
+          type: string
+          description: password del usuario
+      example:
+        first_name: Diego
+        last_name: Videla
+        email: diego@mail.com
+        password: '123456'
