@@ -167,7 +167,7 @@ describe('Testing de Users ', () => {
             await requester.delete(`/users/${response._body.data._id}`)
         })
 
-        it('El endpoint PATCH /users debe devolver un 404 al intentar actualizar un usuario pasando un campo en blanco', async () => {
+        it('El endpoint PATCH /users:id debe devolver un 404 al intentar actualizar un usuario pasando un campo en blanco', async () => {
 
             const mockUser = {
                 first_name: ""

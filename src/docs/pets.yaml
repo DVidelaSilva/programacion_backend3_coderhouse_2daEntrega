@@ -1,0 +1,456 @@
+paths:
+
+  /pets/:
+
+    post:
+      summary: Crea una Macota
+      tags:
+        - Pets
+      requestBody:
+        required: true,
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/requestBodies/createPet'
+      responses:
+        "201":
+          description: Mascota creada exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetPostResponse201'
+        "500":
+          description: Error al crear mascota
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetPostResponse500'
+
+      
+    get:
+      summary: Obtiene todas las Mascotas
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: Mascotas Encontradas exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetsGetResponse200'
+        "206":
+          description: No Existen Mascotas registradas
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetsGetResponse206'
+        "500":
+          description: Error al devolver mascotas
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetsGetResponse500'
+
+  /pets/{pid}:
+
+    get:
+      summary: Obtiene una mascota por su ID
+      tags:
+        - Pets
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id de la mascota que se desea buscar
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Mascota Encontrada exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetGetResponse200'
+        "404":
+          description: Mascota no encontrada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetGetResponse404'
+        "500":
+          description: Error al devolver Mascota
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetGetResponse500'
+
+
+    patch:
+      summary: Actualiza una Mascota por su ID
+      tags:
+        - Pets
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id de la mascota que se desea actualizar
+        schema:
+          $type: String
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/requestBodies/updatePet'
+      responses:
+        "201":
+          description: Mascota actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetPatchResponse201'
+        "404":
+          description: Mascota no encontrada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetPatchResponse404'
+        "500":
+          description: Error al actualizar mascota
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetPatchResponse500'
+
+  
+    delete:
+      summary: Elimina una mascota por su ID
+      tags:
+        - Pets
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id de la mascota que se desea eliminar
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Mascota eliminada exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetDeleteResponse200'
+        "404":
+          description: Mascota no encontrada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetDeleteResponse404'
+        "500":
+          description: Error al Eliminar Mascota
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/PetDeleteResponse500'
+
+
+
+# ***************COMPONENTES***************
+
+components:
+
+# ***************SCHEMAS***************
+
+  schemas:
+    Pets:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id autogenerado por mongoDB
+        name:
+          type: string
+          description: nombre de la mascota
+        type:
+          type: string
+          description: Tipo de mascota
+        age_months:
+          type: number
+          description: meses de vida de mascota
+        age_years:
+          type: number
+          description: años de vida de mascota
+        owner:
+          type: string
+          description: Dueño
+        adopted:
+          type: boolean
+          description: boolean que indica si se encuentra adoptada la mascota
+        
+      example:
+        _id: ObjectId('gdfdshshdytvddhydjndhdhd')
+        name: Lucky
+        type: gato
+        age_months: 5
+        age_years: 2
+        owner: false
+        adopted: false
+
+
+# ***************RESPONSES***************
+
+  responses:
+
+  # GET
+    PetsGetResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Mascotas Encontradas exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pets'
+      example:  
+        status: "success"
+        message: "Mascotas Encontradas exitosamente"
+        data: 
+          - _id: "67a0156ae2e6445cb4a4908a"
+            name: "antu"
+            type: "gato"
+            age_months: 3
+            age_years: 0
+            owner: false
+            adopted: false
+    PetsGetResponse206:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "Info"
+        message:
+          type: string
+          example: "No Existen Mascotas registradas"
+      example:  
+        status: "Info"
+        message: "No Existen Mascotas registradas"
+    PetsGetResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al devolver mascotas"
+      example:  
+        message: "Error al devolver mascotas"
+
+    # GET:uid
+    PetGetResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Mascota Encontrada exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Users'
+      example:  
+        status: "success"
+        message: "Mascota Encontrada exitosamente"
+        data: 
+          - _id: "67a0156ae2e6445cb4a4908a"
+            name: "antu"
+            type: "gato"
+            age_months: 3
+            age_years: 0
+            owner: false
+            adopted: false
+    PetGetResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Mascota no encontrada"
+      example:  
+        status: "error"
+        message: "Mascota no encontrada"
+    PetGetResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al devolver mascota"
+      example:  
+        message: "Error al devolver mascota"
+
+  # POST
+    PetPostResponse201:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Mascota creada exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pets'
+      example:  
+        status: "success"
+        message: "Mascota creada exitosamente"
+        data: 
+          - _id: "67a0156ae2e6445cb4a4908a"
+            name: "antu"
+            type: "gato"
+            age_months: 3
+            age_years: 0
+            owner: false
+            adopted: false
+    PetPostResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al crear mascota"
+      example:  
+        message: "Error al crear mascota"
+
+  # PATCH
+    PetPatchResponse201:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Mascota actualizada exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pets'
+      example:  
+        status: "success"
+        message: "Mascota actualizada exitosamente"
+        data: 
+          - _id: "67a0156ae2e6445cb4a4908a"
+            name: "antu"
+            type: "gato"
+            age_months: 3
+            age_years: 0
+            owner: false
+            adopted: false
+    PetPatchResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Mascota no encontrada"
+      example:  
+        status: "error"
+        message: "Mascota no encontradao"
+    PetPatchResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al actualizar mascota"
+      example:  
+        message: "Error al actualizar mascota"
+
+  # DELETE
+    PetDeleteResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Mascota eliminada exitosamente"
+      example:  
+        status: "success"
+        message: "Mascota eliminada exitosamente"
+        data: 
+          - acknowledged: true
+            deletedCount: 1
+    PetDeleteResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Mascota no encontrada"
+      example:  
+        status: "error"
+        message: "Mascota no encontrada"
+    PetDeleteResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al eliminar mascota'"
+      example:  
+        message: "Error al eliminar mascota'"
+  
+
+
+# ***************REQUEST_BODY***************
+
+  requestBodies:
+    createPet:
+      properties:
+        name:
+          type: string
+          description: nombre de la mascota
+        type:
+          type: string
+          description: tipo de mascota
+        age_months:
+          type: number
+          description: meses de vida de la mascota
+        age_years:
+          type: string
+          description: años de vida de la mascota
+      example:
+        name: "antu"
+        type: "gato"
+        age_months: 3
+        age_years: 0
+    updatePet:
+      properties:
+        name:
+          type: string
+          description: nombre de la mascota
+        type:
+          type: string
+          description: tipo de mascota
+        age_months:
+          type: number
+          description: meses de vida de la mascota
+        age_years:
+          type: string
+          description: años de vida de la mascota
+      example:
+        name: "antu"
+        type: "gato"
+        age_months: 3
+        age_years: 0
