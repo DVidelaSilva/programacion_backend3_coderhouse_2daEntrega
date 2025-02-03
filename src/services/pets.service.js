@@ -9,9 +9,7 @@ class PetsService {
          this.petRepository = new PetsRepository()
     }
     
-
     createPets = async (body) => {
-        
         const {name, type, age_months, age_years} = body
 
         const newPet = {
@@ -25,15 +23,33 @@ class PetsService {
         return pet
     }
 
-
-
     findAllPets = async () => {
         const pets = await this.petRepository.findAllPetsInDB()
         return pets  
     }
 
+    findPet = async (id) => {
+        const pet = await this.petRepository.findPetInDB({_id:id})
+        return pet
+    }
+    
+    updatePet = async (id, body) => {
+        const {name, type, age_months, age_years} = body
 
+        const updatePet = {}
+        if( name !== undefined) updatePet.name = name
+        if( type !== undefined) updatePet.type = type
+        if( age_months !== undefined ) updatePet.age_months = age_months
+        if( age_years !== undefined) updatePet.age_years= age_years
+        
+        const pet = await this.petRepository.updatePetInDB({_id:id}, updatePet)
+        return pet
+    }
 
+    deletePet = async (id) => {
+        const pet = await this.petRepository.deletePetInDB({_id:id})
+        return pet
+    }
 }
 
 

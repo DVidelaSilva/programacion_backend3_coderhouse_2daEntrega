@@ -15,19 +15,25 @@ class PetsRepository {
         return pet
     }
 
-
     findAllPetsInDB = async () => {
         const pets = await petModel.find()
         return pets
     }
 
-    deletePets = async () => {
-        await petModel.deleteMany()
+    findPetInDB = async (params) => {
+        const pet = await petModel.findOne(params)
+        return pet
     }
 
+    updatePetInDB = async (params, body) => {
+        const pet = await petModel.findByIdAndUpdate(params, body)
+        return pet
+    }
 
-
-
+    deletePetInDB = async (params) => {
+        const pet = await petModel.deleteOne(params)
+        return pet
+    }
 }
 
 

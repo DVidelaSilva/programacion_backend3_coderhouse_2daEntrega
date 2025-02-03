@@ -12,7 +12,7 @@ const usersController = new UsersController()
 userRouter.get('/',  usersController.getUsers)
 userRouter.get('/:id',  usersController.getUser)
 userRouter.post('/', validateCreateUserDto, usersController.postUsers)
-userRouter.patch('/:id', validateUpdateUserDto, usersController.updateUsers)
+userRouter.patch('/:id', validateUpdateUserDto, usersController.updateUser)
 userRouter.delete('/:id', usersController.deleteUser)
 
 
