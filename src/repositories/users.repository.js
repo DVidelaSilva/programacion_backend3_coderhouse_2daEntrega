@@ -34,9 +34,10 @@ class UsersRepository {
         return user
     }
 
-    // deleteAllInDB = async () => {
-    //     await userModel.deleteMany()
-    // }
+    findUserByEmailInDB = async (email) => {
+        const user = await userModel.findOne(email)
+        return user
+    }
 }
 
 

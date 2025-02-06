@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 
 const petsCollection = 'pets'
 
-
+ 
 const petSchema = new Schema({
 
     name: {
@@ -27,8 +27,8 @@ const petSchema = new Schema({
     },
     
     owner: {
-        type: Boolean,
-        default: false
+        type: Schema.Types.ObjectId,
+        ref:'users'
     },
 
     adopted: {

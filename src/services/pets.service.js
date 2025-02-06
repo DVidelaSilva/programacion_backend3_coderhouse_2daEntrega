@@ -1,5 +1,5 @@
 import PetsRepository from '../repositories/pets.repository.js'
-import createHash from '../configs/bcrypt.config.js'
+import {createHash} from '../configs/bcrypt.config.js'
 import generatePetFaker from '../utils/petsFaker.js'
 
 

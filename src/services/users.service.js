@@ -1,5 +1,5 @@
 import UsersRepository from '../repositories/users.repository.js'
-import createHash from '../configs/bcrypt.config.js'
+import {createHash} from '../configs/bcrypt.config.js'
 import generateUser from '../utils/usersFaker.js'
 
 class UsersService {
