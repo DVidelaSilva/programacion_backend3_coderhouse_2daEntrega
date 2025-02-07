@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "mocha src/test/**/*.test.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "author": "Diego Videla Silva",
   "license": "ISC",

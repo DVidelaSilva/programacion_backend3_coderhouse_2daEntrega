@@ -1,0 +1,198 @@
+paths:
+
+  /sessions/register/:
+
+    post:
+      summary: Registra un Usuario
+      tags:
+        - Sessions
+      requestBody:
+        required: true,
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/requestBodies/createUser'
+      responses:
+        "201":
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/RegisterPostResponse201'
+        "400":
+          description: Usuario ya se encuentra registrado
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/RegisterPostResponse400'
+        "500":
+          description: Error al crear usuario
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/RegisterPostResponse500'
+
+  /sessions/login/:
+    post:
+      summary: Longin de un Usuario
+      tags:
+        - Sessions
+      requestBody:
+        required: true,
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/requestBodies/loginUser'
+      responses:
+        "200":
+          description: Usuario Logueado exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/LoginPostResponse200'
+        "500":
+          description: Error al crear usuario
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/LoginPostResponse500'
+      
+    
+
+
+
+# ***************COMPONENTES***************
+
+components:
+
+# ***************SCHEMAS***************
+
+  schemas:
+    Users:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id autogenerado por mongoDB
+        first_name:
+          type: string
+          description: nombre del usuario
+        last_name:
+          type: string
+          description: apellido del usuario
+        email:
+          type: string
+          description: email del usuario
+        password:
+          type: string
+          description: password del usuario
+        role:
+          type: string
+          description: role del usuario
+        pets:
+          type: array string
+          description: pets del usuario
+        
+      example:
+        _id: ObjectId('gdfdshshdytvddhydjndhdhd')
+        first_name: Diego
+        last_name: Videla
+        email: diego@mail.com
+        password: '123456'
+        role: user
+        pets: []
+
+
+# ***************RESPONSES***************
+
+  responses:
+
+  # POST
+    RegisterPostResponse201:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Usuario creado exitosamente"
+      example:  
+        status: "success"
+        message: "Usuario creado exitosamente"
+    RegisterPostResponse400:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Usuario ya se encuentra registrado"
+      example:  
+        status: "error"
+        message: "Usuario ya se encuentra registrado"
+    RegisterPostResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al crear usuario"
+      example:  
+        message: "Error al crear usuario"
+
+
+  # POST
+    LoginPostResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Usuario Logueado Exitosamente"
+    LoginPostResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al loguear usuario"
+      example:  
+        message: "Error al loguear usuario"
+  
+
+
+# ***************REQUEST_BODY***************
+
+  requestBodies:
+    createUser:
+      properties:
+        first_name:
+          type: string
+          description: nombre del usuario
+        last_name:
+          type: string
+          description: apellido del usuario
+        email:
+          type: string
+          description: email del usuario
+        password:
+          type: string
+          description: password del usuario
+      example:
+        first_name: Diego
+        last_name: Videla
+        email: diego@mail.com
+        password: '123456'
+    loginUser:
+      properties:
+        email:
+          type: string
+          description: email del usuario
+        password:
+          type: string
+          description: password del usuario
+      example:
+        email: diego@mail.com
+        password: '123456'

@@ -1,7 +1,5 @@
 import SessionService from "../services/sessions.service.js"
 
-
-
 class SessionsController {
 
     constructor() {
@@ -35,7 +33,7 @@ class SessionsController {
 
   
         } catch (error) {
-            return res.status(400).send({status: 'error', error: error.message})
+            return res.status(500).send({status: 'error', message: 'Error al loguear usuario', error: error.message})
         }
     }
 

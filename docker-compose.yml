@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: node-app
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-db
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - "27017:27017"
