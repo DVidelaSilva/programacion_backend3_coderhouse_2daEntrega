@@ -8,8 +8,6 @@ class AdoptionsRepository {
        this.adoptionModel = new adoptionModel()
     }
     
-
-
     createAdoptionInDB = async (data) => {
         const adoption = await adoptionModel.create(data)
         return adoption

@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import AdoptionsController from "../controllers/adoptions.controller.js";
+import validateUpdateAdoptionDto from '../middlewares/validateUpdateAdoptionDto.js';
 
 
 
@@ -8,12 +9,11 @@ const adoptionRouter = Router()
 
 const adoptionsController = new AdoptionsController()
 
-adoptionRouter.post('/:uid/pet/:pid', adoptionsController.postAdoption)
-// petRouter.get('/',  petsController.getPets)
-// petRouter.get('/:id',  petsController.getPet)
-// petRouter.patch('/:id',  validateUpdatePetDto, petsController.updatePet)
-// petRouter.delete('/:id', petsController.deletePet)
-
+adoptionRouter.post('/user/:uid/pet/:pid', adoptionsController.postAdoption)
+adoptionRouter.get('/',  adoptionsController.getAdoptions)
+adoptionRouter.get('/:aid',  adoptionsController.getAdoption)
+adoptionRouter.patch('/:aid', validateUpdateAdoptionDto, adoptionsController.updateAdoption)
+adoptionRouter.delete('/:aid',  adoptionsController.deleteAdoption)
 
 
 export default adoptionRouter

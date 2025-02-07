@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha src/test/pets.test.js",
+    "test": "mocha src/test/sessions.test.js",
     "dev": "nodemon src/server.js"
   },
   "author": "Diego Videla Silva",
