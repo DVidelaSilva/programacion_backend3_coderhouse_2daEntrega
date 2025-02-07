@@ -1,0 +1,463 @@
+paths:
+
+  /adoption/user/{uid}/pet/{pid}:
+
+    post:
+      summary: Crea una Adopcion mediante en id de usuario y id de mascota
+      tags:
+        - Adoptions
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: id del usuario que adoptara
+        schema:
+          $type: String
+      - name: pid
+        in: path
+        required: true
+        description: id de la mascota a adoptar
+        schema:
+          $type: String
+      responses:
+        "201":
+          description: Mascota Adoptada correctamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionPostResponse201'
+        "400":
+          description: Mascota ya se encuentra adoptada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionPostResponse400'
+        "404":
+          description: Usuario o mascota no encontrada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionPostResponse404'
+        "500":
+          description: Error al crear adopcion
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionPostResponse500'
+
+  /adoption/:
+      
+    get:
+      summary: Obtiene todas los Adopciones
+      tags:
+        - Adoptions
+      responses:
+        "200":
+          description: Adopciones Encontradas exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionGetResponse200'
+        "206":
+          description: No Existen Adopciones registradas
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionGetResponse206'
+        "500":
+          description: Error al devolver adopciones
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionGetResponse500'
+
+  /adoption/{aid}:
+
+    get:
+      summary: Obtiene una adopcion por su ID
+      tags:
+        - Adoptions
+      parameters:
+      - name: aid
+        in: path
+        required: true
+        description: id de la adopcion 
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Adopcion Encontrada exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionGetResponse200'
+        "404":
+          description: Adopcion no encontrada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionGetResponse404'
+        "500":
+          description: Error al devolver adopcion
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionGetResponse500'
+
+
+    patch:
+      summary: Actualiza una adopcion por su ID
+      tags:
+        - Adoptions
+      parameters:
+      - name: aid
+        in: path
+        required: true
+        description: id de la adopcion
+        schema:
+          $type: String
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/requestBodies/updateAdoption'
+      responses:
+        "201":
+          description: Adopcion actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionPatchResponse201'
+        "400":
+          description: Mascota ya se encuentra adoptada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionPatchResponse400'
+        "404":
+          description: Dueño o mascota no encontrada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionPatchResponse404'
+        "500":
+          description: Error al actualizar adopcion
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionPatchResponse500'
+
+  
+    delete:
+      summary: Elimina una adopcion por su ID
+      tags:
+        - Adoptions
+      parameters:
+      - name: aid
+        in: path
+        required: true
+        description: id de la adopcion
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Adopcion eliminada exitosamente
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionDeleteResponse200'
+        "404":
+          description: Adopcion no encontrada
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionDeleteResponse404'
+        "500":
+          description: Error al Eliminar adopcion
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/responses/AdoptionDeleteResponse500'
+
+
+
+# ***************COMPONENTES***************
+
+components:
+
+# ***************SCHEMAS***************
+
+  schemas:
+    Adoptions:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id autogenerado por mongoDB
+        owner_id:
+          type: string
+          description: id del usuario
+        pet_id:
+          type: string
+          description: id de la mascota
+        
+      example:
+        _id: ObjectId('gdfdshshdytvddhydjndhdhd')
+        owner_id: 67a54b0fb86fe0797be44e31
+        pet_id: 67a54b0fb86fe0797be44e31
+
+
+
+# ***************RESPONSES***************
+
+  responses:
+
+  # GET
+    AdoptionsGetResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Adopciones Encontradas exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Adoptions'
+      example:  
+        status: "success"
+        message: "Adopciones Encontradas exitosamente"
+        data: 
+          - _id: ObjectId('gdfdshshdytvddhydjndhdhd')
+            owner_id: 67a54b0fb86fe0797be44e31
+            pet_id: 67a54b0fb86fe0797be44e31
+            __v: 0
+    AdoptionGetResponse206:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "Info"
+        message:
+          type: string
+          example: "No Existen Adopciones registradas"
+      example:  
+        status: "Info"
+        message: "No Existen Adopciones registradas"
+    AdoptionsGetResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al devolver adopciones"
+      example:  
+        message: "Error al devolver adopciones"
+
+    # GET:uid
+    AdoptionGetResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Adopcion Encontrada exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Adoptions'
+      example:  
+        status: "success"
+        message: "Adopcion Encontrada exitosamente"
+        data: 
+          - _id: ObjectId('gdfdshshdytvddhydjndhdhd')
+            owner_id: 67a54b0fb86fe0797be44e31
+            pet_id: 67a54b0fb86fe0797be44e31
+            __v: 0
+    AdoptionGetResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Adopcion no encontrada"
+      example:  
+        status: "error"
+        message: "Adopcion no encontrada"
+    AdoptionGetResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al devolver adopcion"
+      example:  
+        message: "Error al devolver adopcion"
+
+  # POST
+    AdoptionPostResponse201:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Adopcion creada exitosamente"
+      example:  
+        status: "success"
+        message: "Adopcion creada exitosamente"
+        data: 
+          - _id: ObjectId('gdfdshshdytvddhydjndhdhd')
+            owner_id: 67a54b0fb86fe0797be44e31
+            pet_id: 67a54b0fb86fe0797be44e31
+            __v: 0
+    AdoptionPostResponse400:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Mascota ya se encuentra adoptada"
+      example:  
+        status: "error"
+        message: "Mascota ya se encuentra adoptada"
+    AdoptionPostResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Usuario o mascota no encontrada"
+      example:  
+        status: "error"
+        message: "Usuario o mascota no encontrada"
+    AdoptionPostResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al crear adopcion"
+      example:  
+        message: "Error al crear adopcion"
+
+  # PATCH
+    AdoptionPatchResponse201:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Adopcion actualizada exitosamente"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Adoptions'
+      example:  
+        status: "success"
+        message: "Adopcion actualizada exitosamente"
+        data: 
+          - _id: ObjectId('gdfdshshdytvddhydjndhdhd')
+            owner_id: 67a54b0fb86fe0797be44e31
+            pet_id: 67a54b0fb86fe0797be44e31
+            __v: 0
+    AdoptionPatchResponse400:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Mascota ya se encuentra adoptada"
+      example:  
+        status: "error"
+        message: "Mascota ya se encuentra adoptada"
+    AdoptionPatchResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Dueño o mascota no encontrada"
+      example:  
+        status: "error"
+        message: "Dueño o mascota no encontrada"
+    AdoptionPatchResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al actualizar adopcion"
+      example:  
+        message: "Error al actualizar adopcion"
+
+  # DELETE
+    AdoptionDeleteResponse200:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Adopcion eliminada exitosamente"
+      example:  
+        status: "success"
+        message: "Adopcion eliminada exitosamente"
+        data: 
+          - acknowledged: true
+            deletedCount: 1
+
+    AdoptionDeleteResponse404:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Adopcion no encontrada"
+      example:  
+        status: "error"
+        message: "Adopcion no encontrada"
+    AdoptionDeleteResponse500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error al eliminar adopcion'"
+      example:  
+        message: "Error al eliminar adopcion'"
+  
+
+
+# ***************REQUEST_BODY***************
+
+  requestBodies:
+    updateAdoption:
+      properties:
+        owner_id:
+          type: string
+          description: id del usuario
+        pet_id:
+          type: string
+          description: id de la mascota
+      example:
+        owner_id: 67a54b0fb86fe0797be44e31
+        pet_id: 67a54b0fb86fe0797be44e31
+
+

@@ -31,7 +31,7 @@ class SessionsController {
             const {body} = req
             const {token, role} = await this.sessionService.loginUser(body)
 
-            return res.status(201).send({status: 'success', message: 'Usuario Logueado Exitosamente', token: token, 'role': role})
+            return res.status(200).send({status: 'success', message: 'Usuario Logueado Exitosamente', token: token, 'role': role})
 
   
         } catch (error) {

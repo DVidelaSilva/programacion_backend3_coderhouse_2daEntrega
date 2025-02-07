@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "mocha src/test/sessions.test.js",
+    "test": "mocha src/test/**/*.test.js",
     "dev": "nodemon src/server.js"
   },
   "author": "Diego Videla Silva",
@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",

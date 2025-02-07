@@ -14,8 +14,8 @@ describe('Testing de Users ', () => {
 
         it('El endpoint POST /users debe devolver un 400 al intentar crear un usuario sin pasarle uno de los campos', async () => {
             const mockUser = {
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
             const{ statusCode, ok, _body} = await requester.post('/users').send(mockUser)
@@ -24,9 +24,9 @@ describe('Testing de Users ', () => {
 
         it('El endpoint POST /users debe crear un usuario correctamente', async () => {
             const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
             const{ statusCode, ok, _body} = await requester.post('/users').send(mockUser)
@@ -37,17 +37,17 @@ describe('Testing de Users ', () => {
 
         it('El endpoint POST /user debe devolver un 400 al intentar crear un usuario que ya existe en BD', async () => {
             const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
             const response = await requester.post('/users').send(mockUser)
 
             const mockUser2 = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
 
@@ -59,9 +59,9 @@ describe('Testing de Users ', () => {
 
         it('El endpoint POST /users debe crear un usuario y guardar en BD un hash de la contraseña ingresada ', async () => {
             const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
             
@@ -84,9 +84,9 @@ describe('Testing de Users ', () => {
         it('El endpoint GET /users:id debe devolver un usuario por el ID', async () => {
 
             const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
 
@@ -102,9 +102,9 @@ describe('Testing de Users ', () => {
         it('El endpoint GET /users:id debe devolver 404 al no encontrar un usuario por el ID', async () => {
 
             const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
 
@@ -120,15 +120,15 @@ describe('Testing de Users ', () => {
         it('El endpoint GET /users debe devolver los usuarios', async () => {
 
             const mockUser1 = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest1@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail1@mail.com",
                 password: "123456"       
             }
             const mockUser2 = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest2@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail2@mail.com",
                 password: "123456"       
             }
 
@@ -150,15 +150,15 @@ describe('Testing de Users ', () => {
 
         it('El endpoint PATCH /user debe devolver un 201 al intentar actualizar el nombre de un usuario', async () => {
             const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
             const response = await requester.post('/users').send(mockUser)
 
             const mockUser2 = {
-                first_name: "DiegoMODIFICADO",    
+                first_name: "testnameMODIFICADO",    
             }
 
             const{ statusCode, ok, _body} = await requester.patch(`/users/${response._body.data._id}`).send(mockUser2)
@@ -179,17 +179,17 @@ describe('Testing de Users ', () => {
 
         it('El endpoint PATCH /user debe devolver un 400 al intentar crear un usuario que ya existe en BD', async () => {
             const mockUser = {
-                first_name: "Diego1",
-                last_name: "Videla",
-                email: "diegoTest1@mail.com",
+                first_name: "testname1",
+                last_name: "testapellido",
+                email: "testmail1@mail.com",
                 password: "123456"       
             }
             const response = await requester.post('/users').send(mockUser)
 
             const mockUser2 = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest1@mail.com",
+                first_name: "testname1",
+                last_name: "testapellido",
+                email: "testmail1@mail.com",
                 password: "123456"       
             }
 
@@ -206,9 +206,9 @@ describe('Testing de Users ', () => {
         it('El endpoint DELETE /users:id debe Eliminar un usuario por el ID', async () => {
 
             const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
 
@@ -222,9 +222,9 @@ describe('Testing de Users ', () => {
         it('El endpoint DELETE /users:id debe devolver 404 al no encontrar un usuario por el ID', async () => {
 
             const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
 

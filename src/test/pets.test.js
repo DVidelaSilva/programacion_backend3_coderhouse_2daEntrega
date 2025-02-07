@@ -14,7 +14,7 @@ describe('Testing de Pets ', () => {
 
         it('El endpoint POST /Pets debe devolver un 400 al intentar crear una mascota sin pasarle uno de los campos', async () => {
             const mockPet = {
-                type: "gato",
+                type: "typepet",
                 age_months: 3,
                 age_years: 2     
             }
@@ -24,8 +24,8 @@ describe('Testing de Pets ', () => {
 
         it('El endpoint POST /pets debe crear una mascota correctamente', async () => {
             const mockPet = {
-                name: "Lucky",
-                type: "gato",
+                name: "petname",
+                type: "typepet",
                 age_months: 3,
                 age_years: 2     
             }
@@ -42,8 +42,8 @@ describe('Testing de Pets ', () => {
         it('El endpoint GET /pets:id debe devolver una mascota por el ID', async () => {
 
             const mockPet = {
-                name: "Lucky",
-                type: "gato",
+                name: "petname",
+                type: "typepet",
                 age_months: 3,
                 age_years: 2     
             }
@@ -60,8 +60,8 @@ describe('Testing de Pets ', () => {
         it('El endpoint GET /pets:id debe devolver 404 al no encontrar una mascota por el ID', async () => {
 
             const mockPet = {
-                name: "Lucky",
-                type: "gato",
+                name: "petname",
+                type: "typepet",
                 age_months: 3,
                 age_years: 2     
             }
@@ -78,14 +78,14 @@ describe('Testing de Pets ', () => {
         it('El endpoint GET /pets debe devolver las mascotas', async () => {
 
             const mockPet1 = {
-                name: "Lucky",
-                type: "gato",
+                name: "petname1",
+                type: "typepet",
                 age_months: 3,
                 age_years: 2     
             }
             const mockPet2 = {
-                name: "antu",
-                type: "gato",
+                name: "petname2",
+                type: "typepet",
                 age_months: 5,
                 age_years: 0     
             }
@@ -108,15 +108,15 @@ describe('Testing de Pets ', () => {
 
         it('El endpoint PATCH /pets:id debe devolver un 201 al intentar actualizar el nombre de una mascota', async () => {
             const mockPet = {
-                name: "Lucky",
-                type: "gato",
+                name: "petname",
+                type: "typepet",
                 age_months: 3,
                 age_years: 2     
             }
             const response = await requester.post('/pets').send(mockPet)
 
             const mockPet2 = {
-                name: "LuckyMODIFICADO",   
+                name: "petnameMODIFICADO",   
             }
 
             const{ statusCode, ok, _body} = await requester.patch(`/pets/${response._body.data._id}`).send(mockPet2)
@@ -142,8 +142,8 @@ describe('Testing de Pets ', () => {
         it('El endpoint DELETE /pets:id debe Eliminar una mascota por el ID', async () => {
 
             const mockPet = {
-                name: "Lucky",
-                type: "gato",
+                name: "petname",
+                type: "typepet",
                 age_months: 3,
                 age_years: 2     
             }
@@ -158,8 +158,8 @@ describe('Testing de Pets ', () => {
         it('El endpoint DELETE /pets:id debe devolver 404 al no encontrar una mascota por el ID', async () => {
 
             const mockPet = {
-                name: "Lucky",
-                type: "gato",
+                name: "petname",
+                type: "typepet",
                 age_months: 3,
                 age_years: 2     
             }

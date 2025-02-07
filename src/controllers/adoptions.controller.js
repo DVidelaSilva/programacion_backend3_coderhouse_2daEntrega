@@ -22,9 +22,8 @@ class AdoptionsController {
                 return res.status(404).send({status:"error",error:"Mascota no encontrada"})
             }
 
-            console.log(pet.adopted);
             if(pet.adopted) {
-                return res.status(404).send({status:"error",error:"Mascota ya se encuentra adoptada"})
+                return res.status(400).send({status:"error",error:"Mascota ya se encuentra adoptada"})
             }
 
             user.pets.push(pet._id)
@@ -32,9 +31,9 @@ class AdoptionsController {
             await this.adoptionsService.updateUserAdopted(user._id, {pets: user.pets})
             await this.adoptionsService.updatePetAdopted(pet._id, {adopted: true, owner:user._id})
             
-            await this.adoptionsService.createAdoption({owner: user._id, pet: pet._id})
+            const response = await this.adoptionsService.createAdoption({owner: user._id, pet: pet._id})
             
-            return res.status(201).send({status:"success",message:"Pet adopted"})
+            return res.status(201).send({status:"success",message:"Mascota Adoptada correctamente", data: response})
 
         } catch (error) {
             console.log(error);
@@ -91,7 +90,7 @@ class AdoptionsController {
                 return res.status(404).send({status:"error",error:"Mascota no encontrada"})
             }
             if(pet.adopted) {
-                return res.status(404).send({status:"error",error:"Mascota ya se encuentra adoptada"})
+                return res.status(400).send({status:"error",error:"Mascota ya se encuentra adoptada"})
             }
             
 

@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcryptjs from 'bcryptjs'
 
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))

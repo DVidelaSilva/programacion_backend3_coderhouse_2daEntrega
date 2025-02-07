@@ -10,64 +10,64 @@ const requester = supertest('http://localhost:8080')
 
 describe('Testing de Session ', () => {
 
-    describe('Test de Users POST', () => {
+    describe('Test de session POST Register', () => {
 
-        it('El endpoint POST /users debe devolver un 400 al intentar crear un usuario sin pasarle uno de los campos', async () => {
-            const mockUser = {
-                last_name: "Videla",
+        it('El endpoint POST /sessions/register debe devolver un 400 al intentar registrar un usuario sin pasarle uno de los campos', async () => {
+            const mockSession = {
+                last_name: "testapellido",
                 email: "diegoTest@mail.com",
                 password: "123456"       
             }
-            const{ statusCode, ok, _body} = await requester.post('/users').send(mockUser)
+            const{ statusCode, ok, _body} = await requester.post('/sessions/register').send(mockSession)
             expect(statusCode).to.be.equal(400)
         })
 
-        it('El endpoint POST /users debe crear un usuario correctamente', async () => {
-            const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+        it('El endpoint POST /sessions/register debe registrar un usuario correctamente', async () => {
+            const mockSession = {
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
-            const{ statusCode, ok, _body} = await requester.post('/users').send(mockUser)
+            const{ statusCode, ok, _body} = await requester.post('/sessions/register').send(mockSession)
             expect(_body.data).to.have.property('_id')
 
             await requester.delete(`/users/${_body.data._id}`)
         })
 
-        it('El endpoint POST /user debe devolver un 400 al intentar crear un usuario que ya existe en BD', async () => {
-            const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+        it('El endpoint POST /sessions/register debe devolver un 400 al intentar registrar un usuario que ya existe en BD', async () => {
+            const mockSession1 = {
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
-            const response = await requester.post('/users').send(mockUser)
+            const response = await requester.post('/sessions/register').send(mockSession1)
 
-            const mockUser2 = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+            const mockSession2 = {
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
 
-            const{ statusCode, ok, _body} = await requester.post('/users').send(mockUser2)
+            const{ statusCode, ok, _body} = await requester.post('/users').send(mockSession2)
             expect(statusCode).to.be.equal(400)
 
             await requester.delete(`/users/${response._body.data._id}`)
         })
 
-        it('El endpoint POST /users debe crear un usuario y guardar en BD un hash de la contraseña ingresada ', async () => {
-            const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+        it('El endpoint POST /sessions/register debe registrar un usuario y guardar en BD un hash de la contraseña ingresada ', async () => {
+            const mockSession = {
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
                 password: "123456"       
             }
             
-            const passwordOrigin = mockUser.password
+            const passwordOrigin = mockSession.password
 
-            const response = await requester.post('/users').send(mockUser)
+            const response = await requester.post('/sessions/register').send(mockSession)
 
            const userInDB = await requester.get(`/users/${response._body.data._id}`)
            const passwordSave = await userInDB._body.data.password
@@ -79,160 +79,48 @@ describe('Testing de Session ', () => {
     })
 
 
-    describe('Test de Users GET', () => {
+    describe('Test de session POST Login', () => {
 
-        it('El endpoint GET /users:id debe devolver un usuario por el ID', async () => {
 
-            const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+        it('El endpoint POST /sessions/login debe loguear un usuario correctamente', async () => {
+            const mockSessionRegister = {
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
+                password: "123456"       
+            }
+            const response = await requester.post('/sessions/register').send(mockSessionRegister)
+
+            const mockSessionLogin = {
+                email: "testmail@mail.com",
                 password: "123456"       
             }
 
-            const response = await requester.post('/users').send(mockUser)
-            expect(response._body.data).to.have.property('_id')
-
-            const{ statusCode, ok, _body} = await requester.get(`/users/${response._body.data._id}`)
+            const{ statusCode, ok, _body} = await requester.post('/sessions/login').send(mockSessionLogin)
             expect(statusCode).to.be.equal(200)
 
             await requester.delete(`/users/${response._body.data._id}`)
         })
 
-        it('El endpoint GET /users:id debe devolver 404 al no encontrar un usuario por el ID', async () => {
 
-            const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
+        it('El endpoint POST /sessions/login debe loguear un usuario correctamente y devolver el token', async () => {
+            const mockSessionRegister = {
+                first_name: "testname",
+                last_name: "testapellido",
+                email: "testmail@mail.com",
+                password: "123456"       
+            }
+            const response = await requester.post('/sessions/register').send(mockSessionRegister)
+
+            const mockSessionLogin = {
+                email: "testmail@mail.com",
                 password: "123456"       
             }
 
-            const response = await requester.post('/users').send(mockUser)
+            const{ statusCode, ok, _body} = await requester.post('/sessions/login').send(mockSessionLogin)
+            expect(_body).haveOwnProperty('token')
 
             await requester.delete(`/users/${response._body.data._id}`)
-
-            const{ statusCode, ok, _body} = await requester.get(`/users/${response._body.data._id}`)
-            expect(statusCode).to.be.equal(404)
-        })
-
-
-        it('El endpoint GET /users debe devolver los usuarios', async () => {
-
-            const mockUser1 = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest1@mail.com",
-                password: "123456"       
-            }
-            const mockUser2 = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest2@mail.com",
-                password: "123456"       
-            }
-
-            const response1 = await requester.post('/users').send(mockUser1)
-            const response2 = await requester.post('/users').send(mockUser2)
-
-            const{ statusCode, ok, _body} = await requester.get(`/users`)
-            expect(response1._body.data).to.have.property('_id')
-            expect(response2._body.data).to.have.property('_id')
-            expect(statusCode).to.be.equal(200)
-
-            await requester.delete(`/users/${response1._body.data._id}`)
-            await requester.delete(`/users/${response2._body.data._id}`)
-        })  
-    })
-
-
-    describe('Test de Users PATCH', () => {
-
-        it('El endpoint PATCH /user debe devolver un 201 al intentar actualizar el nombre de un usuario', async () => {
-            const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
-                password: "123456"       
-            }
-            const response = await requester.post('/users').send(mockUser)
-
-            const mockUser2 = {
-                first_name: "DiegoMODIFICADO",    
-            }
-
-            const{ statusCode, ok, _body} = await requester.patch(`/users/${response._body.data._id}`).send(mockUser2)
-            expect(statusCode).to.be.equal(201)
-
-            await requester.delete(`/users/${response._body.data._id}`)
-        })
-
-        it('El endpoint PATCH /users:id debe devolver un 404 al intentar actualizar un usuario pasando un campo en blanco', async () => {
-
-            const mockUser = {
-                first_name: ""
-            }
-
-            const{ statusCode, ok, _body} = await requester.patch('/users').send(mockUser)
-            expect(statusCode).to.be.equal(404)
-        })
-
-        it('El endpoint PATCH /user debe devolver un 400 al intentar crear un usuario que ya existe en BD', async () => {
-            const mockUser = {
-                first_name: "Diego1",
-                last_name: "Videla",
-                email: "diegoTest1@mail.com",
-                password: "123456"       
-            }
-            const response = await requester.post('/users').send(mockUser)
-
-            const mockUser2 = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest1@mail.com",
-                password: "123456"       
-            }
-
-            const{ statusCode, ok, _body} = await requester.patch(`/users/${response._body.data._id}`).send(mockUser2)
-            expect(statusCode).to.be.equal(400)
-
-            await requester.delete(`/users/${response._body.data._id}`)
-        })
-    })
-
-
-    describe('Test de Users DELETE', () => {
-
-        it('El endpoint DELETE /users:id debe Eliminar un usuario por el ID', async () => {
-
-            const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
-                password: "123456"       
-            }
-
-            const response = await requester.post('/users').send(mockUser)
-            expect(response._body.data).to.have.property('_id')
-
-            const{ statusCode, ok, _body} = await requester.delete(`/users/${response._body.data._id}`)
-            expect(statusCode).to.be.equal(200)
-        })
-
-        it('El endpoint DELETE /users:id debe devolver 404 al no encontrar un usuario por el ID', async () => {
-
-            const mockUser = {
-                first_name: "Diego",
-                last_name: "Videla",
-                email: "diegoTest@mail.com",
-                password: "123456"       
-            }
-
-            const response = await requester.post('/users').send(mockUser)
-            await requester.delete(`/users/${response._body.data._id}`)
-
-            const{ statusCode, ok, _body} = await requester.delete(`/users/${response._body.data._id}`)
-            expect(statusCode).to.be.equal(404)
         })
     })
 
