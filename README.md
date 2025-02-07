@@ -3,6 +3,23 @@
 
 ## Backend - Adopcion Mascotas
 
+
+## Docker
+
+La imagen de Docker para este proyecto está disponible en Docker Hub:
+
+[**davs88/programacion_backend3_coderhouse_2daentrega-app**](https://hub.docker.com/repository/docker/davs88/programacion_backend3_coderhouse_2daentrega-app/general)
+
+### Comandos de Docker
+
+Para subir una nueva etiqueta (tag) a este repositorio de Docker Hub, usa el siguiente comando:
+
+```bash
+docker push davs88/programacion_backend3_coderhouse_2daentrega-app:tagname
+
+
+
+
 ## Instructivo Levantar Proyecto
 
 1. Clonar Proyecto desde repositorio
